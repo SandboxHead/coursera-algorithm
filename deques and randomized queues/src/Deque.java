@@ -42,6 +42,8 @@ public class Deque<Item> implements Iterable<Item> {
 
     public Item removeFirst() throws NoSuchElementException{
         if (size()==0) throw new NoSuchElementException();
+        f=(f+1)%arr.length;
+        Item temp= arr[(arr.length+f-1)%arr.length];
         int arr_length=arr.length;
         if (size()<arr_length/4){
             Item[] arr1=(Item[]) new Object[arr.length/2];
@@ -52,11 +54,12 @@ public class Deque<Item> implements Iterable<Item> {
             l=size();
             arr=arr1;
         }
-        f=(f+1)%arr.length;
-        return arr[(arr.length+f-1)%arr.length];
+        return temp;
     }
     public Item removeLast()throws NoSuchElementException{
         if (size()==0) throw new NoSuchElementException();
+        l=(arr.length+l-1)%arr.length;
+        Item temp= arr[l];
         int arr_length=arr.length;
         if (size()<arr_length/4){
             Item[] arr1=(Item[]) new Object[arr.length/2];
@@ -67,8 +70,7 @@ public class Deque<Item> implements Iterable<Item> {
             l=size();
             arr=arr1;
         }
-        l=(arr.length+l-1)%arr.length;
-        return arr[l];
+        return temp;
     }
     public int size(){
         return (arr.length+l-f)%arr.length;
