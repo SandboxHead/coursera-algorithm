@@ -95,7 +95,7 @@ public class Deque<Item> implements Iterable<Item> {
     }
 
 
-    public DequeIterator iterator() {
+    public Iterator<Item> iterator() {
         return new DequeIterator();
     }
 

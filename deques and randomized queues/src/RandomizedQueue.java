@@ -36,10 +36,10 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
 
     public Item deqeue() throws NoSuchElementException {
         if (size() == 0) throw new NoSuchElementException();
-        int rand = StdRandom.uniform(f, f + l);
+        int rand = StdRandom.uniform(f, f + size());
         Item temp = arr[rand % arr.length];
-        arr[rand] = arr[l];
-        l = (arr.length + l - 1) % arr.length;
+        arr[rand%arr.length] = arr[(arr.length+l-1)%arr.length];
+        l=(arr.length+l-1)%arr.length;
         int arr_length = arr.length;
         if (size() < arr_length / 4) {
             Item[] arr1 = (Item[]) new Object[arr.length / 2];
@@ -65,18 +65,23 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
         private int l = arr1.length;
 
         private queueIterator() {
-            for (int i = 0; i < size(); i++) arr1[i] = arr[(f + i) % arr.length];
+            //RandomizedQueue r = new RandomizedQueue();
+            for (int i = 0; i < arr1.length; i++) arr1[i] = arr[(f + i) % arr.length];
         }
 
         public boolean hasNext() {
             return (l == 0);
         }
 
-        public Item next() {
+        public Item next() throws NoSuchElementException {
+            if (!hasNext()) throw new NoSuchElementException();
             int rand = StdRandom.uniform(l);
-            Item temp = arr[rand];
-            arr1[rand] = arr[l--];
+            Item temp = arr1[rand];
+            arr1[rand] = arr1[l--];
             return temp;
+        }
+        public void remove()throws UnsupportedOperationException{
+            throw new UnsupportedOperationException();
         }
     }
 
@@ -86,14 +91,15 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
 
     public static void main(String args[]) {
         RandomizedQueue<Integer> d = new RandomizedQueue<>();
-        d.enqueue(2);
+        d.enqueue(10);
         //System.out.println(d.removeLast());
-        d.enqueue(34);
-        d.enqueue(342);
-        d.enqueue(878);
-        d.enqueue(3045);
+        d.enqueue(20);
+        d.enqueue(30);
+        d.enqueue(40);
+        d.enqueue(50);
         System.out.println(d.deqeue());
         System.out.println(d.deqeue());
+        System.out.println(d.l);
         for (int i : d) {
             System.out.println(i);
         }
