@@ -70,14 +70,15 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
         }
 
         public boolean hasNext() {
-            return (l == 0);
+            return (l != 0);
         }
 
         public Item next() throws NoSuchElementException {
             if (!hasNext()) throw new NoSuchElementException();
             int rand = StdRandom.uniform(l);
             Item temp = arr1[rand];
-            arr1[rand] = arr1[l--];
+            arr1[rand] = arr1[l-1];
+            l--;
             return temp;
         }
         public void remove()throws UnsupportedOperationException{
@@ -89,7 +90,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
         return new queueIterator();
     }
 
-    public static void main(String args[]) {
+  /*  public static void main(String args[]) {
         RandomizedQueue<Integer> d = new RandomizedQueue<>();
         d.enqueue(10);
         //System.out.println(d.removeLast());
@@ -99,12 +100,11 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
         d.enqueue(50);
         System.out.println(d.deqeue());
         System.out.println(d.deqeue());
-        System.out.println(d.l);
         for (int i : d) {
             System.out.println(i);
         }
 
-    }
+    }*/
 }
 
 

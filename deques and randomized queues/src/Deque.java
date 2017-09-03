@@ -5,7 +5,8 @@ public class Deque<Item> implements Iterable<Item> {
     private Item[] arr;
     private int f=0;
     private int l=0;
-    public Deque(){arr=(Item[])new Object[1];}
+    public Deque(){arr = new Item[1];}
+
     public boolean isEmpty(){
         return size()==0;
     }
@@ -13,7 +14,7 @@ public class Deque<Item> implements Iterable<Item> {
         if (item==null)throw new IllegalArgumentException();
         int arr_length=arr.length;
         if (arr.length==size()+1){
-            Item[] arr1 = (Item[])new Object[2*arr_length];
+            Item[] arr1 = (Item[])new Object[2*arr.length];
             for (int i=0;i<arr_length;i++){
                 arr1[i]=arr[(f+i)%arr_length];
             }
@@ -99,8 +100,8 @@ public class Deque<Item> implements Iterable<Item> {
         return new DequeIterator();
     }
 
-    public static void main(String args[]){
-        Deque<Integer> d = new Deque();
+   /* public static void main(String args[]){
+        Deque<Integer> d = new Deque<Integer>();
         d.addLast(2);
         //System.out.println(d.removeLast());
         d.addFirst(34);
@@ -112,7 +113,7 @@ public class Deque<Item> implements Iterable<Item> {
             System.out.println(i);
         }
 
-    }
+    }*/
 }
 
 
