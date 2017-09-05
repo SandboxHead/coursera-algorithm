@@ -1,11 +1,12 @@
+import java.lang.reflect.Array;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 public class Deque<Item> implements Iterable<Item> {
-    private Item[] arr;
+    private Item arr[];
     private int f=0;
     private int l=0;
-    public Deque(){arr = new Item[1];}
+    public Deque(){arr = (Item[]) new Object[1];}
 
     public boolean isEmpty(){
         return size()==0;
@@ -77,7 +78,7 @@ public class Deque<Item> implements Iterable<Item> {
         return (arr.length+l-f)%arr.length;
     }
 
-    private class DequeIterator implements Iterator {
+    private class DequeIterator implements Iterator<Item> {
         private int currentindex=0;
 
         public boolean hasNext() {
@@ -100,7 +101,7 @@ public class Deque<Item> implements Iterable<Item> {
         return new DequeIterator();
     }
 
-   /* public static void main(String args[]){
+    public static void main(String args[]){
         Deque<Integer> d = new Deque<Integer>();
         d.addLast(2);
         //System.out.println(d.removeLast());
@@ -113,7 +114,7 @@ public class Deque<Item> implements Iterable<Item> {
             System.out.println(i);
         }
 
-    }*/
+    }
 }
 
 

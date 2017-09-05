@@ -60,7 +60,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
         return arr[rand % arr.length];
     }
 
-    public class queueIterator implements Iterator {
+    public class queueIterator implements Iterator<Item> {
         private Item[] arr1 = (Item[]) new Object[size()];
         private int l = arr1.length;
 
