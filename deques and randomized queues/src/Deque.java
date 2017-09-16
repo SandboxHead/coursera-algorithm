@@ -1,17 +1,16 @@
-import java.lang.reflect.Array;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 public class Deque<Item> implements Iterable<Item> {
-    private Item arr[];
-    private int f=0;
-    private int l=0;
+    private Item[] arr;
+    private int f = 0;
+    private int l = 0;
     public Deque(){arr = (Item[]) new Object[1];}
 
     public boolean isEmpty(){
         return size()==0;
     }
-    public void addFirst(Item item) throws IllegalArgumentException{
+    public void addFirst(Item item) {
         if (item==null)throw new IllegalArgumentException();
         int arr_length=arr.length;
         if (arr.length==size()+1){
@@ -26,7 +25,7 @@ public class Deque<Item> implements Iterable<Item> {
         arr[(arr.length+f-1)%arr.length]=item;
         f=(arr.length+f-1)%arr.length;
     }
-    public void addLast(Item item)throws IllegalArgumentException{
+    public void addLast(Item item){
         if (item==null) throw new IllegalArgumentException();
         int arr_length = arr.length;
         if (arr_length==size()+1) {
@@ -42,7 +41,7 @@ public class Deque<Item> implements Iterable<Item> {
         l=(l+1)%arr.length;
     }
 
-    public Item removeFirst() throws NoSuchElementException{
+    public Item removeFirst() {
         if (size()==0) throw new NoSuchElementException();
         f=(f+1)%arr.length;
         Item temp= arr[(arr.length+f-1)%arr.length];
@@ -58,7 +57,7 @@ public class Deque<Item> implements Iterable<Item> {
         }
         return temp;
     }
-    public Item removeLast()throws NoSuchElementException{
+    public Item removeLast(){
         if (size()==0) throw new NoSuchElementException();
         l=(arr.length+l-1)%arr.length;
         Item temp= arr[l];
@@ -103,13 +102,13 @@ public class Deque<Item> implements Iterable<Item> {
 
     public static void main(String args[]){
         Deque<Integer> d = new Deque<Integer>();
-        d.addLast(2);
+        d.addFirst(0);
         //System.out.println(d.removeLast());
-        d.addFirst(34);
-        d.addLast(342);
-        d.addFirst(878);
-        d.addFirst(3045);
+        d.addFirst(1);
         d.removeLast();
+        d.removeLast();
+        d.addFirst(4);
+        System.out.println(d.removeLast());
         for (int i: d) {
             System.out.println(i);
         }

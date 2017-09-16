@@ -18,7 +18,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
         return (arr.length + l - f) % arr.length;
     }
 
-    public void enqueue(Item item) throws IllegalArgumentException {
+    public void enqueue(Item item) {
         if (item == null) throw new IllegalArgumentException();
         int arr_length = arr.length;
         if (size() == arr.length - 1) {
@@ -34,7 +34,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
         l = (l + 1) % arr.length;
     }
 
-    public Item deqeue() throws NoSuchElementException {
+    public Item dequeue() {
         if (size() == 0) throw new NoSuchElementException();
         int rand = StdRandom.uniform(f, f + size());
         Item temp = arr[rand % arr.length];
@@ -54,13 +54,13 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
     }
 
 
-    public Item sample() throws NoSuchElementException {
+    public Item sample()  {
         if (size() == 0) throw new NoSuchElementException();
         int rand = StdRandom.uniform(f, f + l);
         return arr[rand % arr.length];
     }
 
-    public class queueIterator implements Iterator<Item> {
+    private class queueIterator implements Iterator<Item> {
         private Item[] arr1 = (Item[]) new Object[size()];
         private int l = arr1.length;
 
@@ -73,7 +73,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
             return (l != 0);
         }
 
-        public Item next() throws NoSuchElementException {
+        public Item next()  {
             if (!hasNext()) throw new NoSuchElementException();
             int rand = StdRandom.uniform(l);
             Item temp = arr1[rand];
@@ -81,7 +81,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
             l--;
             return temp;
         }
-        public void remove()throws UnsupportedOperationException{
+        public void remove(){
             throw new UnsupportedOperationException();
         }
     }
