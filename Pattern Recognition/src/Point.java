@@ -33,10 +33,10 @@ public class Point implements Comparable<Point> {
 
         }
     }
-    public class pointComparator implements Comparator<Point>{
+    private class pointComparator implements Comparator<Point>{
         public int compare(Point a, Point b){
-            if(slopeTo(a)<slopeTo(b)) return -1;
-            else if (slopeTo(a)>slopeTo(b)) return 1;
+            if(Double.compare(slopeTo(a), slopeTo(b))<0) return -1;
+            else if (Double.compare(slopeTo(a), slopeTo(b))>0) return 1;
             else return 0;
         }
     }
@@ -44,5 +44,11 @@ public class Point implements Comparable<Point> {
         return new pointComparator();
 
     }
-
+    public static void main(String args[]){
+        Point a = new Point(10,0);
+        Point b = new Point(20,10);
+        Point c = new Point(30,20);
+        System.out.println(a.slopeOrder().compare(b,c));
+    }
 }
+

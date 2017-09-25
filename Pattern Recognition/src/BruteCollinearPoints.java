@@ -3,8 +3,14 @@ import edu.princeton.cs.algs4.StdOut;
 import edu.princeton.cs.algs4.In;
 public class BruteCollinearPoints {
     private Point[] p;
-    public BruteCollinearPoints(Point[] points){
+    public BruteCollinearPoints(Point[] points) {
         if (points == null) throw new IllegalArgumentException();
+        if(points.length==0) throw new IllegalArgumentException();
+        for (int i=0; i<points.length;i++){
+            if (points[i]==null) {
+                throw new IllegalArgumentException();
+            }
+        }
         for (int i=0;i<points.length;i++){
             for (int j=i+1;j<points.length;j++){
                 if (points[i].compareTo(points[j])==0) throw new IllegalArgumentException();
