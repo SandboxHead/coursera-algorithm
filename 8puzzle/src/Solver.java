@@ -1,7 +1,6 @@
 import edu.princeton.cs.algs4.*;
 import edu.princeton.cs.algs4.MinPQ;
 import edu.princeton.cs.algs4.StdOut;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Iterator;
 
@@ -19,19 +18,23 @@ public class Solver {
         }
 
         @Override
-        public int compareTo(@NotNull Solver.BoardInfo o) {
+        public int compareTo(BoardInfo o) {
             int priority1 = this.manhattan+this.moves;
             int priority2 = o.manhattan+o.moves;
-            if(priority1==priority2)return 0;
+            if(priority1<priority2)return -1;
             else if(priority1>priority2) return 1;
-            return -1;
+            else return 0;
         }
     }
     private MinPQ<BoardInfo> pq;
     private int moves;
     private MinPQ<BoardInfo> inverse;
     private boolean valid;
-    public Solver(Board initial){
+    private BoardInfo min;
+    public Solver(Board initial) {
+        //long curr = System.currentTimeMillis();
+        //long time1 = 0;
+        if(initial==null) throw new IllegalArgumentException();
         pq = new MinPQ<BoardInfo>();
         BoardInfo init = new BoardInfo(initial, initial.manhattan(), 0,null);
         pq.insert(init);
@@ -40,30 +43,41 @@ public class Solver {
         BoardInfo initTwin = new BoardInfo(twin, twin.manhattan(), 0,null);
         inverse.insert(initTwin);
         int moves = 0;
-        BoardInfo min;
         BoardInfo twinMin;
         BoardInfo neighbour;
         BoardInfo neighbourTwin;
         while(pq.min().manhattan!=0 && inverse.min().manhattan!=0){
-
             min = pq.delMin();
             moves = min.moves+1;
             twinMin = inverse.delMin();
-            for (Board next : min.board.neighbours()) {
-                if (min.previous==null || !next.equals(min.previous)){
+            for (Board next : min.board.neighbors()) {
+                if(next.isGoal()){
+                    valid = true;
+                    this.moves = moves;
+                    min = new BoardInfo(next, next.manhattan(), moves, min);
+                    return;
+                }
+                if (min.previous==null || !next.equals(min.previous.board)){
                     neighbour = new BoardInfo(next, next.manhattan(), moves, min );
                     pq.insert(neighbour);
                 }
             }
-            for (Board next : twinMin.board.neighbours()) {
-                if (min.previous==null || !next.equals(min.previous)){
+            for (Board next : twinMin.board.neighbors()) {
+                if(next.isGoal()){
+                    valid = false;
+                    this.moves = moves;
+                    return;
+                }
+                if (twinMin.previous==null || !next.equals(twinMin.previous.board)){
                     neighbourTwin = new BoardInfo(next, next.manhattan(), moves, twinMin );
                     inverse.insert(neighbourTwin);
                 }
             }
+
         }
-        valid = (pq.min().manhattan==0);
+        valid = pq.min().board.isGoal();
         this.moves = pq.min().moves;
+        min = pq.min();
     }
     public boolean isSolvable(){
         return valid;
@@ -75,7 +89,7 @@ public class Solver {
     private class pathIterator implements Iterator<Board>{
         Board[] b = new Board[moves+1];
         int index = moves;
-        BoardInfo current = pq.min();
+        BoardInfo current = min;
         int i;
 
         private pathIterator(){
@@ -121,8 +135,10 @@ public class Solver {
         Board initial = new Board(blocks);
 
         // solve the puzzle
+        long start = System.currentTimeMillis();
         Solver solver = new Solver(initial);
-
+        //StdOut.println(System.currentTimeMillis()-start);
+        //StdOut.println(solver.time);
         // print solution to standard output
         if (!solver.isSolvable())
             StdOut.println("No solution possible");

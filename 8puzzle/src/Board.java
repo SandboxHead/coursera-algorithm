@@ -1,17 +1,14 @@
 //import org.jetbrains.annotations.Contract;
-import java.util.Comparator;
-import edu.princeton.cs.algs4.In;
-import edu.princeton.cs.algs4.StdRandom;
-import org.jetbrains.annotations.Contract;
-import org.jetbrains.annotations.NotNull;
 
+import edu.princeton.cs.algs4.In;
+
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 public class Board {
     private final int[] board;
     private final int dim;
-
     public Board(int[][] blocks) {
         this.dim = blocks.length;
         this.board = new int[dim * dim];
@@ -20,6 +17,10 @@ public class Board {
                 this.board[(i * dim) + j] = blocks[i][j];
             }
         }
+    }
+    private Board(int[] board, int dim){
+        this.board = board;
+        this.dim = dim;
     }
 
     public int dimension() {
@@ -34,7 +35,6 @@ public class Board {
         return misplaced;
     }
 
-    @Contract(pure = true)
     private int absolute(int n) {
         if (n < 0) return -1 * n;
         else return n;
@@ -56,7 +56,7 @@ public class Board {
     }
 
     public boolean isGoal() {
-        return hamming() == 0;
+        return manhattan() == 0;
     }
 
     private void replace(int i, int j){
@@ -65,15 +65,9 @@ public class Board {
         board[j] = temp;
     }
 
-    @NotNull
     private Board makeCopy(){
-        int[][] other = new int[dim][dim];
-        for (int i = 0; i < dim; i++) {
-            for (int j = 0; j < dim; j++) {
-                other[i][j] = board[i * dim + j];
-            }
-        }
-        return new Board(other);
+        int[] board2 = board.clone();
+        return new Board(board2, dim);
     }
 
     public Board twin() {
@@ -91,17 +85,10 @@ public class Board {
 
 
     public boolean equals(Object y) {
-        if (this == y) {
-            return true;
-        }
-        if (y == null) {
-            return false;
-        }
-        if (!(y instanceof Board)) {
-            return false;
-        }
-        Board p = (Board) y;
-        return this.board.equals(p.board);
+        if (y==null) return false;
+        if(!(y instanceof Board)) return false;
+        Board z = (Board) y;
+        return Arrays.equals(this.board, z.board);
     }
 
     private class boardIterator implements Iterator<Board> {
@@ -115,6 +102,28 @@ public class Board {
                     break;
                 }
             }
+//            arr = new Board[4];
+//            len = 0;
+//            if(index0>=dim){
+//                arr[len]=makeCopy();
+//                arr[len].replace(index0, index0-dim);
+//                len++;
+//            }
+//            if(index0<dim*dim-dim){
+//                arr[len] = makeCopy();
+//                arr[len].replace(index0, index0+dim);
+//                len++;
+//            }
+//            if(index0%dim!=dim-1){
+//                arr[len] = makeCopy();
+//                arr[len].replace(index0, index0+1);
+//                len++;
+//            }
+//            if(index0%dim!=0){
+//                arr[len] = makeCopy();
+//                arr[len].replace(index0, index0-1);
+//                len++;
+//            }
             if (index0==0){
                 len = 2;
                 arr = new Board[2];
@@ -202,7 +211,7 @@ public class Board {
         }
         private int index = 0;
         public boolean hasNext() {
-            return index != len;
+            return index < len;
         }
 
         public Board next() {
@@ -212,7 +221,7 @@ public class Board {
         }
     }
 
-    public Iterable<Board> neighbours() {
+    public Iterable<Board> neighbors() {
         return new Iterable<Board>() {
             @Override
             public Iterator<Board> iterator() {
@@ -250,7 +259,7 @@ public class Board {
             }
         Board initial = new Board(tiles);
         System.out.println(initial);
-        for (Board next : initial.neighbours()){
+        for (Board next : initial.neighbors()){
             System.out.println(next);
         }
 
